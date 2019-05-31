@@ -1,13 +1,13 @@
 <template>
   <div class= "choosecity">
     <div class= "cc_container">
-      <van-nav-bar title= "选择城市" left-arrow @click-left= "onClickLeft" />
+      <van-nav-bar  title= "选择城市" left-arrow @click-left= "onClickLeft" />
       <van-row class= "cc_container_search">
       	<van-col class= "cc_container_row_col" :span= "22" :offset= "1">
           <div class= "cc_container_row_col_search">
             <img src= "/static/images/icon_sousuo.png">
           </div>
-          <input class= "cc_container_row_col_input" type= "text" placeholder= "请输入城市名称或首字母">
+          <input class= "cc_container_row_col_input" @input="searchCity" type= "text" placeholder= "请输入城市名称或首字母" v-model="keyword">
         </van-col>
       </van-row>
       <van-row  class= "cc_container_location">
@@ -46,15 +46,22 @@
         offsetTop:"",
         offsetHeight:"",
         headerFixed:"",
-        itemArr:[]
+        itemArr:[],
+        keyword:""
       }
     },
     components: {
     },
     methods: {
       onClickLeft () {
-        // this.$toast('返回')
-        // this.$toast('hello')
+        this.$router.push('/return');
+      },
+      searchCity () {
+        for (var i=0;i<this.itemArr.length;i++) {
+          console.log("aa");
+          console.log(this.itemArr[i].content);
+          console.log(this.itemArr[i].content.indexOf(this.keyword));
+        }
       },
       scroll () {
         // this.$nextTick(function(){
@@ -78,8 +85,8 @@
       	console.log(data.data);
         if (data.data.code == 200) {
           this.$toast("请求成功");
+          this.itemArr = data.data.data;
         }
-        this.itemArr = data.data.data;
       })
       .catch((err)=>{
       	this.$toast("请求失败");

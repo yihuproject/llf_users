@@ -31,6 +31,9 @@
           <van-col class="product_detail_price_discount" :span="4">
             4.69折
           </van-col>
+          <van-col class="product_detail_price_add" :span="4" :offset="4">
+            <router-link to="/add">+</router-link>
+          </van-col>
         </van-row>
       </van-col>
     </van-row>
@@ -88,6 +91,7 @@
     data () {
       return {
         p_item:[],
+        totalData:null,
         customerItems:[
           {
             portrait:"/static/images/icon_bnt_dnzp@2x.png",
@@ -111,12 +115,16 @@
       
        var formData = new FormData();
        formData.append("member_id",1);
-       formData.append("store_id",3);
-       formData.append("goods_id",3);
+       formData.append("store_id",6);
+       formData.append("goods_id",49);
        this.$axios.post("/u1/goods_detail",formData,{headers: {"Content-Type":"application/json"}})
        .then((data)=>{
        	console.log(data);
-       	// this.list = data.data.data;
+        if (data.data.code == 200) {
+          console.log(data.data);
+          this.totalData = data.data.data;
+          console.log(this.totalData);
+        }
        })
        .catch((err)=>{
        	console.log(err);
@@ -166,6 +174,16 @@
         .product_detail_price_discount
           font-size:15PX
           color:#FF4A4A
+        .product_detail_price_add
+          background:orange
+          width: 34px
+          text-align:center
+          height: 34px
+          line-height: 34px
+          font-size:20PX
+          border-radius:50%
+          a
+            color:#fff
     .product_describe
       background:#fff
       line-height: 50px
