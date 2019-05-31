@@ -1,7 +1,7 @@
 <template>
   <div class="all">
-    <div class="all_list">
-      <div class="all_list_items" v-for="li in totalData">
+   <div class="all_list">
+      <!-- <div class="all_list_items" v-for="li in totalData">
         <van-row class="all_list_top">
           <van-col :span="5" class="all_list_portrait">
             <img :src="li.member_avator">
@@ -36,7 +36,7 @@
             </van-row>
           </van-col>
         </van-row>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -50,32 +50,10 @@
       }
     },
     mounted () {
-      var formData = new FormData();
-      formData.append("store_id",3);
-      formData.append("type",1);//type:1、2、3、4
-      this.$axios.post("/u1/all_comment",formData,{headers: {"Content-Type":"application/json"}})
-      .then((data)=>{
-        console.log(data);
-        if (data.data.code == 200) {
-          console.log(data.data.data);
-          this.totalData = data.data.data.comment.list;
-        }
-      })
-      .catch((err)=>{
-      	this.$toast("网络请求错误");
-      })
-    },
-    computed: {
-      evaluateState() {
-        for (var i in this.totalData) {
-          if (this.totalData[i].haoping > 3) {
-            return "满意";
-          }else{
-            return "不满意";
-          }
-        }
-      }
-    },
+        this.totalData = this.$parent.tmsg.comment.list;
+        console.log(this.$parent.tmsg);
+        console.log(this.$parent.tmsg.comment);
+    }
   }
 </script>
 
@@ -172,5 +150,4 @@
               left: 30px
               border:20px solid transparent
               border-bottom-color:#e5e5e5
-              
 </style>

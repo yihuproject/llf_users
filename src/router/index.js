@@ -20,54 +20,44 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'ChooseCity',
       component: ChooseCity
     },
     {
       path: '/cc',
-      name: 'ChooseCity',
       component: ChooseCity
     },
     {
       path: '/evaluate',
-      name: 'evaluate',
       component: EvaluateIndex,
       children: [
          {
           path: '/',
-          name: 'EvaluateAll',
           component: EvaluateAll
         },
         {
           path: '/evaluateall',
-          name: 'EvaluateAll',
           component: EvaluateAll
         },
         {
           path: '/evaluates',
-          name: 'EvaluateSatisfied',
           component: EvaluateSatisfied
         },
         {
           path: '/evaluateus',
-          name: 'EvaluateUnSatisfied',
           component: EvaluateUnSatisfied
         },
         {
           path: '/evaluatehimg',
-          name: 'EvaluateHasImg',
           component: EvaluateHasImg
         }
       ]
     },
     {
       path: '/business',
-      name: 'Business',
       component: Business
     },
     {
       path: '/p_detail',
-      name: 'p_detail',
       component: ProductDetail
     }
   ]

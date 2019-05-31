@@ -49,20 +49,9 @@
       }
     },
     mounted () {
-      var formData = new FormData();
-      formData.append("store_id",3);
-      formData.append("type",4);//type:1、2、3、4
-      this.$axios.post("/u1/all_comment",formData,{headers: {"Content-Type":"application/json"}})
-      .then((data)=>{
-        console.log(data);
-        if (data.data.code == 200) {
-          console.log(data.data.data);
-          this.totalData = data.data.data.comment.list;
-        }
-      })
-      .catch((err)=>{
-      	this.$toast("网络请求错误");
-      })
+        this.totalData = this.$parent.tmsg.comment.list;
+        console.log(this.$parent.tmsg);
+        console.log(this.$parent.tmsg.comment);
     }
   }
 </script>

@@ -29,22 +29,22 @@
       </van-row>
    <van-row class="evaluate_card">
         <van-row class="evaluate_card_items">
-          <router-link to="evaluateall">
+          <router-link to="evaluateall" @touchend="queryData(1,store_id)">
             <van-col :span='6'  class="evaluate_card__item">
               全部({{tmsg.comment.all}})
             </van-col>
           </router-link>
-          <router-link to="evaluates">
+          <router-link to="evaluates"  @touchend="queryData(2,store_id)">
             <van-col :span='6'  class="evaluate_card__item">
               满意({{tmsg.comment.bumanyi}})
             </van-col>
           </router-link>
-          <router-link to="/evaluateus">
+          <router-link to="/evaluateus"  @touchend="queryData(3,store_id)">
             <van-col :span='6'  class="evaluate_card__item">
               不满意({{tmsg.comment.manyi}})
             </van-col>
           </router-link>
-          <router-link to="/evaluatehimg">
+          <router-link to="/evaluatehimg"  @touchend="queryData(4,store_id)">
             <van-col :span='6'  class="evaluate_card__item">
               有图({{tmsg.comment.youtu}})
             </van-col>
@@ -57,31 +57,32 @@
 </template>
 
 <script>
-  import bus from '@/assets/eventBus.js'
   export default {
     data () {
       return {
-        tmsg:null
+        tmsg:null,
+        store_id:3
       }
     },
-    beforeCreate () {
-      var formData = new FormData();
-      formData.append("store_id",3);
-      formData.append("type",1);//type:1、2、3、4
-      this.$axios.post("/u1/all_comment",formData,JSON.stringify({headers: {"Content-Type":"application/json"}}))
-      .then((data)=>{
-        console.log(data);
-        if (data.data.code == 200&&data.data.data.pingfen!=undefined) {
-          console.log(data.data);
-          this.tmsg = data.data.data;
-          console.log(this.tmsg.data.comment);
-        }
-      })
-      .catch((err)=>{
-      	console.log(err);
-      })
-      console.log(this.tmsg);
-      // console.log(this.tmsg.data.pingfen);
+    methods: {
+      queryData(type,store_id) {
+        var formData = new FormData();
+        formData.append("store_id",store_id);
+        formData.append("type",type);//type:1、2、3、4
+        this.$axios.post("/u1/all_comment",formData,JSON.stringify({headers: {"Content-Type":"application/json"}}))
+        .then((data)=>{
+          if (data.data.code == 200) {
+            this.tmsg = data.data.data;
+          }
+        })
+        .catch((err)=>{
+        	console.log(err);
+        })
+      }
+    },
+    created () {
+      this.queryData(1,this.store_id);
+      console.log(this.tmsg.pingfen);
     }
   }
 </script>
