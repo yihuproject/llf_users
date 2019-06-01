@@ -1,7 +1,7 @@
 <template>
   <div class="all">
    <div class="all_list">
-      <!-- <div class="all_list_items" v-for="li in totalData">
+       <div class="all_list_items" v-for="li in totalData">
         <van-row class="all_list_top">
           <van-col :span="5" class="all_list_portrait">
             <img :src="li.member_avator">
@@ -36,7 +36,7 @@
             </van-row>
           </van-col>
         </van-row>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -45,14 +45,25 @@
   export default {
     data () {
       return {
-        totalData:null,
+        totalData:"a",
         evaluateState:""
       }
     },
-    mounted () {
-        this.totalData = this.$parent.tmsg.comment.list;
-        console.log(this.$parent.tmsg);
-        console.log(this.$parent.tmsg.comment);
+    created () {
+          var formData = new FormData();
+          formData.append("store_id",this.$parent.store_id);
+          formData.append("type",1);//type:1、2、3、4
+          this.$axios.post("/u1/all_comment",formData,JSON.stringify({headers: {"Content-Type":"application/json"}}))
+          .then((data)=>{
+            console.log(data);
+            if (data.data.code == 200) {
+              this.totalData = data.data.data.comment.list;
+              console.log(this.totalData);
+            }
+          })
+          .catch((err)=>{
+          	console.log(err);
+          })
     }
   }
 </script>

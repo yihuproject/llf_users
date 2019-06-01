@@ -13,6 +13,8 @@ import EvaluateHasImg from '@/components/evaluate/HasImg'
 import Business from '@/components/Business'
 //product_detail
 import ProductDetail from '@/components/ProductDetail'
+//license
+import License from '@/components/License'
 
 Vue.use(Router)
 
@@ -59,6 +61,10 @@ export default new Router({
     {
       path: '/p_detail',
       component: ProductDetail
+    },
+    {
+      path: '/license',
+      component: License
     }
   ]
 })

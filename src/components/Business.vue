@@ -7,13 +7,13 @@
     </van-row>
     <van-row class="business_store_img">
       <van-col :span="23" offset="1">
-        <img src="/static/images/icon_bnt_dnzp@2x.png" alt="">
-        <img src="/static/images/icon_bnt_dpzp@2x.png" alt="">
+        <img :src="totalData.face_img" alt="">
+        <img :src="totalData.logo_img" alt="">
       </van-col>
     </van-row>
     <van-row class="business_store_contact">
       <van-col :span="22" offset="1">
-        <p class="business_store_contact_address">深圳市宝安区新安街道宝民社区宝民一路五巷1号</p>
+        <p class="business_store_contact_address">{{totalData.area_info}}</p>
         <span class="business_store_contact_icon"><img src="/static/images/order_ic_dianhua.png" alt=""></span>
       </van-col>
     </van-row>
@@ -22,25 +22,25 @@
         <van-row class="business_detail_info_name">
           <van-col :span="23" :offset="1">
             <span class="left">商家名称</span>
-            <span class="right">果实先生</span>
+            <span class="right">{{totalData.store_name}}</span>
           </van-col>
         </van-row>
         <van-row class="business_detail_info_classify">
           <van-col :span="23" :offset="1">
             <span class="left">商家分类</span>
-            <span class="right">水果</span>
+            <span class="right">{{totalData.sc_name}}</span>
           </van-col>
         </van-row>
         <van-row class="business_detail_info_tel">
           <van-col :span="23" :offset="1">
             <span class="left">商家电话</span>
-            <span class="right">020-607829842000</span>
+            <span class="right">{{totalData.store_phone}}</span>
           </van-col>
         </van-row>
         <van-row class="business_detail_info_open_time">
           <van-col :span="23" :offset="1">
             <span class="left">营业时间</span>
-            <span class="right">09:00-20:00</span>
+            <span class="right">{{totalData.work_start_time}}-{{totalData.work_end_time}}</span>
           </van-col>
         </van-row>
         <van-row class="business_detail_info_img">
@@ -60,8 +60,27 @@
   export default {
     data () {
       return {
-
+        totalData:"a",
+        store_id:6
       }
+    },
+    created () {
+      var formData = new FormData();
+      formData.append("store_id",this.store_id);
+      this.$axios.post("/u1/storeinfo",formData,JSON.stringify({headers: {"Content-Type":"application/json"}}))
+      .then((data)=>{
+        console.log(data);
+        if (data.data.code == 200) {
+          this.totalData = data.data.data;
+        }
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+      
+      
+      
+      
     }
   }
 </script>

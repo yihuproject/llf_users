@@ -60,17 +60,32 @@
   export default {
     data () {
       return {
-        tmsg:null,
+        tmsg:{
+          comment:{
+            all: 0,
+            bumanyi: 0,
+            list: [
+              {}
+            ],
+            manyi: 0,
+            youtu: 0
+          },
+          pingfen:{
+            baozhuang:0,
+            kouwei:0,
+            peisong:0
+          }
+        },
         store_id:3
       }
     },
-    methods: {
-      queryData(type,store_id) {
+    created () {
         var formData = new FormData();
-        formData.append("store_id",store_id);
-        formData.append("type",type);//type:1、2、3、4
+        formData.append("store_id",this.store_id);
+        formData.append("type",1);//type:1、2、3、4
         this.$axios.post("/u1/all_comment",formData,JSON.stringify({headers: {"Content-Type":"application/json"}}))
         .then((data)=>{
+          console.log(data);
           if (data.data.code == 200) {
             this.tmsg = data.data.data;
           }
@@ -78,11 +93,6 @@
         .catch((err)=>{
         	console.log(err);
         })
-      }
-    },
-    created () {
-      this.queryData(1,this.store_id);
-      console.log(this.tmsg.pingfen);
     }
   }
 </script>

@@ -2,36 +2,36 @@
   <div class="detail">
     <van-row class="product_banner">
       <van-col :span="24">
-        <img src="/static/images/tab_bnt_bj_xs.png">
+        <img :src="totalData.goods_info.goods_image">
       </van-col>
     </van-row>
     <van-row class="product_detail">
       <van-col :span="22" :offset="1">
         <van-row class="product_detail_title">
           <van-col :span="24">
-            超级豪华水果套餐西瓜+甜橙+芒果
+            {{totalData.goods_info.goods_name}}
           </van-col>
         </van-row>
         <van-row class="product_detail_detail">
           <van-col :span="4">
-            月售985
+            月售{{totalData.goods_info.goods_salenum}}
           </van-col>
           <van-col :span="1">|</van-col>
           <van-col :span="4">
-            月售985
+            点赞{{totalData.goods_info.zan}}
           </van-col>
         </van-row>
         <van-row class="product_detail_price">
           <van-col class="product_detail_price_realprice" :span="4">
-            ￥14.9
+            {{totalData.goods_info.goods_price}}
           </van-col>
           <van-col class="product_detail_price_p" :span="4">
-            ￥32.8
+            {{totalData.goods_info.goods_marketprice}}
           </van-col>
           <van-col class="product_detail_price_discount" :span="4">
-            4.69折
+            {{realdiscount}}
           </van-col>
-          <van-col class="product_detail_price_add" :span="4" :offset="4">
+          <van-col class="product_detail_price_add" :span="2" :offset="10">
             <router-link to="/add">+</router-link>
           </van-col>
         </van-row>
@@ -56,27 +56,27 @@
         <van-row class="product_valuate_title">
           <van-col :span="24">商品评价</van-col>
         </van-row>
-        <van-row class="product_valuate_items" v-for="(item,index) in customerItems">
+        <van-row class="product_valuate_items" v-for="(item,index) in totalData.com_info">
           <van-col :span="24">
             <van-row>
               <van-col class="product_valuate_items_img" :span="4">
-                <img :src="item.portrait">
+                <img :src="item.member_avatar">
               </van-col>
               <van-col class="product_valuate_items_info" :span="14" :offset="1">
-                <p class="product_valuate_items_info_title">{{item.userName}}</p>
+                <p class="product_valuate_items_info_title">{{item.member_name}}</p>
                 <p class="product_valuate_items_info_thumb_up">
-                  <img src="/static/images/pingjia_ic_dianz.png" v-show="item.isThumbsUp==true">
-                  <img class="thumb_up_false" src="/static/images/pingjia_ic_dianz1.png" v-show="item.isThumbsUp==false">
-                  <i v-show="item.isThumbsUp==true">{{item.thumb}}</i>
+                  <img src="/static/images/pingjia_ic_dianz.png" v-show="item.is_zan==1">
+                  <img class="thumb_up_false" src="/static/images/pingjia_ic_dianz1.png" v-show="item.is_zan==0">
+                  <i v-show="item.is_zan==1">赞了该商品</i>
                 </p>
               </van-col>
               <van-col class="product_valuate_items_time" :span="5">
-                {{item.time}}
+                {{item.geval_addtime}}
               </van-col>
             </van-row>
             <van-row>
               <van-col class="product_valuate_items_content" :span="20" :offset="3">
-                {{item.content}}
+                {{item.geval_content}}
               </van-col>
             </van-row>
           </van-col>
@@ -90,40 +90,37 @@
   export default {
     data () {
       return {
-        p_item:[],
-        totalData:null,
-        customerItems:[
-          {
-            portrait:"/static/images/icon_bnt_dnzp@2x.png",
-            userName:"阿打发打发",
-            isThumbsUp:true,
-            thumb:"赞了该商品",
-            time:"2019.04.28",
-            content:"水果套餐超级好吃的，就是量有点少了，下次 记得多放点水果哈"
-          },
-          {
-            portrait:"/static/images/icon_bnt_dnzp@2x.png",
-            userName:"阿打发打发",
-            isThumbsUp:false,
-            time:"2019.04.28",
-            content:"水果套餐超级好吃的，就是量有点少了，下次 记得多放点水果哈"
-          },
-        ]
+        totalData:{
+          cart:"",
+          goods_info: {
+            describe: "",
+            goods_id: "",
+            goods_image: "",
+            goods_marketprice: "",
+            goods_name: "",
+            goods_price: "",
+            goods_salenum: "",
+            zan: ""
+          }
+        },
+        realdiscount:"a",
+        member_id:1,
+        store_id:6,
+        goods_id:49
       }
     },
-    mounted () {
-      
+    created () {
        var formData = new FormData();
-       formData.append("member_id",1);
-       formData.append("store_id",6);
-       formData.append("goods_id",49);
-       this.$axios.post("/u1/goods_detail",formData,{headers: {"Content-Type":"application/json"}})
+       formData.append("member_id",this.member_id);
+       formData.append("store_id",this.store_id);
+       formData.append("goods_id",this.goods_id);
+       this.$axios.post("/u1/goods_detail",formData)
        .then((data)=>{
        	console.log(data);
         if (data.data.code == 200) {
-          console.log(data.data);
           this.totalData = data.data.data;
-          console.log(this.totalData);
+          var a = this.totalData.goods_info.goods_price/this.totalData.goods_info.goods_marketprice;
+          this.realdiscount = a.toFixed(2)*10+"折";
         }
        })
        .catch((err)=>{

@@ -45,13 +45,24 @@
   export default {
     data () {
       return {
-        totalData:null
+        totalData:"a"
       }
     },
     mounted () {
-        this.totalData = this.$parent.tmsg.comment.list;
-        console.log(this.$parent.tmsg);
-        console.log(this.$parent.tmsg.comment);
+        var formData = new FormData();
+        formData.append("store_id",this.$parent.store_id);
+        formData.append("type",2);//type:1、2、3、4
+        this.$axios.post("/u1/all_comment",formData,JSON.stringify({headers: {"Content-Type":"application/json"}}))
+        .then((data)=>{
+          console.log(data);
+          if (data.data.code == 200) {
+            this.totalData = data.data.data.comment.list;
+            console.log(this.totalData);
+          }
+        })
+        .catch((err)=>{
+        	console.log(err);
+        })
     }
   }
 </script>
